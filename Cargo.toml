@@ -1,0 +1,12 @@
+[package]
+name = "xdg-desktop-portal-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+env_logger = "0.10.0"
+http = "0.2.9"
+log = "0.4.19"
+rfd = "0.11.4"
+tokio = { version = "1.29.1", features = ["full"] }
+zbus = "3.14.1"

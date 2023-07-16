@@ -1,0 +1,4 @@
+[portal]
+DBusName=org.freedesktop.impl.portal.desktop.rs
+Interfaces=org.freedesktop.impl.portal.FileChooser
+UseIn=wlroots;sway
