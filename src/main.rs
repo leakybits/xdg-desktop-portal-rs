@@ -168,5 +168,7 @@ async fn main() -> zbus::Result<()> {
         .build()
         .await?;
 
-    loop {}
+    std::future::pending::<()>().await;
+
+    Ok(())
 }
