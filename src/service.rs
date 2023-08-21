@@ -3,6 +3,41 @@ use zbus::{dbus_interface, zvariant};
 /// `StrMap` is similar to dbus's `Dict<String, Variant>` but uses `&str` instead of `String`.
 type StrMap<'a> = std::collections::HashMap<&'a str, zvariant::Value<'a>>;
 
+/// AppChooser implements the org.freedesktop.impl.portal.AppChooser interface.
+pub struct AppChooser {}
+
+#[dbus_interface(name = "org.freedesktop.portal.AppChooser")]
+impl AppChooser {
+    /// Interface for choosing an application.
+    #[dbus_interface(out_args("response", "results"))]
+    async fn choose_application(
+        &self,
+        handle: zvariant::ObjectPath<'_>,
+        app_id: &str,
+        parent_window: &str,
+        choices: Vec<&str>,
+        _options: StrMap<'_>,
+    ) -> zbus::fdo::Result<(u32, StrMap<'_>)> {
+        log::info!(
+            "choose_application({}, {}, {}, {:?})",
+            handle,
+            app_id,
+            parent_window,
+            choices
+        );
+
+        todo!()
+    }
+
+    /// Interface for choosing an application.
+    #[dbus_interface(out_args("response", "results"))]
+    async fn update_choices(&self, handle: zvariant::ObjectPath<'_>, choices: Vec<&str>) {
+        log::info!("update_choices({}, {:?})", handle, choices);
+
+        todo!()
+    }
+}
+
 /// FileChooser implements the org.freedesktop.impl.portal.FileChooser interface.
 pub struct FileChooser {}
 
@@ -13,12 +48,18 @@ impl FileChooser {
     async fn open_file(
         &self,
         handle: zvariant::ObjectPath<'_>,
-        _app_id: &str,
-        _parent_window: &str,
+        app_id: &str,
+        parent_window: &str,
         title: &str,
         options: StrMap<'_>,
     ) -> zbus::fdo::Result<(u32, StrMap<'_>)> {
-        log::info!("open_file({}, {})", handle, title);
+        log::info!(
+            "open_file({}, {}, {}, {})",
+            handle,
+            app_id,
+            parent_window,
+            title
+        );
 
         let multiple = matches!(options.get("multiple"), Some(zvariant::Value::Bool(true)));
 
@@ -74,12 +115,18 @@ impl FileChooser {
     async fn save_file(
         &self,
         handle: zvariant::ObjectPath<'_>,
-        _app_id: &str,
-        _parent_window: &str,
+        app_id: &str,
+        parent_window: &str,
         title: &str,
         options: StrMap<'_>,
     ) -> zbus::fdo::Result<(u32, StrMap<'_>)> {
-        log::info!("save_file({}, {})", handle, title);
+        log::info!(
+            "save_file({}, {}, {}, {})",
+            handle,
+            app_id,
+            parent_window,
+            title
+        );
 
         if let Some(zvariant::Value::Bool(true)) = options.get("multiple") {
             return zbus::fdo::Result::Err(zbus::fdo::Error::NotSupported(String::from(
@@ -114,12 +161,18 @@ impl FileChooser {
     async fn save_files(
         &self,
         handle: zvariant::ObjectPath<'_>,
-        _app_id: &str,
-        _parent_window: &str,
+        app_id: &str,
+        parent_window: &str,
         title: &str,
         _options: StrMap<'_>,
     ) -> zbus::fdo::Result<(u32, StrMap<'_>)> {
-        log::info!("save_files({}, {})", handle, title);
+        log::info!(
+            "save_files({}, {}, {}, {})",
+            handle,
+            app_id,
+            parent_window,
+            title
+        );
 
         match rfd::FileDialog::new().set_title(title).pick_folder() {
             Some(path) => {

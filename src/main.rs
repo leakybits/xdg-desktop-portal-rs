@@ -10,6 +10,7 @@ async fn main() -> zbus::Result<()> {
     let _conn = zbus::ConnectionBuilder::session()?
         .name("org.freedesktop.impl.portal.desktop.rs")?
         .serve_at("/org/freedesktop/portal/desktop", service::FileChooser {})?
+        .serve_at("/org/freedesktop/portal/desktop", service::AppChooser {})?
         .build()
         .await?;
 
