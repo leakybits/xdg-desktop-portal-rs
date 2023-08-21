@@ -26,15 +26,14 @@ impl AppChooser {
             choices
         );
 
-        todo!()
+        // Just return an empty result for now;
+        // pretend we don't know any applications.
+        zbus::fdo::Result::Ok((1, StrMap::new()))
     }
 
     /// Interface for choosing an application.
-    #[dbus_interface(out_args("response", "results"))]
     async fn update_choices(&self, handle: zvariant::ObjectPath<'_>, choices: Vec<&str>) {
         log::info!("update_choices({}, {:?})", handle, choices);
-
-        todo!()
     }
 }
 
